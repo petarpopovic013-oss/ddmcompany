@@ -1,0 +1,64 @@
+export const siteConfig = {
+  name: "DDM Company",
+  description:
+    "Servis i održavanje, rent-a-car, Keeway i Morbidelli motocikli, Vesta i Trigano prikolice i ugradnja auto-kuka u Novom Sadu.",
+  phoneDisplay: "060 300 16 33",
+  phoneHref: "tel:+381603001633",
+  email: "ddmcompany@gmail.com",
+  address: "Dr Svetislava Kasapinovića 9, 21000 Novi Sad",
+  mapsUrl:
+    "https://www.google.com/maps/search/?api=1&query=Dr+Svetislava+Kasapinovi%C4%87a+9%2C+21000+Novi+Sad",
+  instagramUrl: "https://www.instagram.com/ddmcompany.ns/",
+  instagramDisplay: "@ddmcompany.ns",
+  hours: {
+    weekdays: "Radni dani 08:00–16:00",
+    saturday: "Subota 08:00–14:00",
+    sunday: "Nedelja zatvoreno",
+  },
+  businessLines: [
+    {
+      id: "rentacar",
+      number: "01",
+      name: "DDM Rent a Car",
+      label: "Iznajmljivanje vozila",
+      description:
+        "Pouzdana vozila, jasne cene i direktan dogovor sa našim timom u Novom Sadu.",
+      href: "https://rentacarddm.rs",
+      cta: "Izaberite vozilo",
+      logo: "/brands/ddm-company.png",
+    },
+    {
+      id: "keeway",
+      number: "02",
+      name: "Keeway Srbija",
+      label: "Motocikli i skuteri",
+      description:
+        "Savremeni motocikli i skuteri za svakodnevnu vožnju, gradske rute i nove puteve.",
+      href: "https://keeway.rs",
+      cta: "Pogledajte modele",
+      logo: "/brands/keeway.png",
+    },
+    {
+      id: "morbidelli",
+      number: "03",
+      name: "Morbidelli Srbija",
+      label: "Motocikli",
+      description:
+        "Italijansko trkačko nasleđe, savremena tehnologija i motocikli dizajnirani za karakter.",
+      href: "https://morbidelli.rs",
+      cta: "Otkrijte Morbidelli",
+      logo: "/brands/morbidelli.webp",
+    },
+    {
+      id: "povuci",
+      number: "04",
+      name: "Povuci.rs",
+      label: "Auto-prikolice",
+      description:
+        "Nove Vesta i Trigano auto-prikolice, fabričke cene i kompletna dokumentacija za registraciju.",
+      href: "https://povuci.rs",
+      cta: "Pronađite prikolicu",
+      logo: "/brands/povuci.png",
+    },
+  ],
+} as const;
