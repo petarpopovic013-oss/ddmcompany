@@ -67,7 +67,6 @@ export default function Home() {
         closes: "14:00",
       },
     ],
-    sameAs: [siteConfig.instagramUrl],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "DDM Company delatnosti",
@@ -132,8 +131,8 @@ export default function Home() {
                 <em>Na jednom mestu.</em>
               </h1>
               <p className="hero-intro">
-                Servis i održavanje, rent-a-car, motocikli Keeway i Morbidelli,
-                auto-prikolice i ugradnja auto-kuka — jedan DDM tim u Novom Sadu.
+                Servis i održavanje, SWM automobili, rent-a-car, motocikli Keeway i
+                Morbidelli, auto-prikolice i ugradnja auto-kuka — jedan DDM tim u Novom Sadu.
               </p>
               <div className="hero-actions">
                 <a className="button button-light" href={siteConfig.phoneHref}>
@@ -159,7 +158,12 @@ export default function Home() {
 
           <nav className="hero-directory" aria-label="DDM Company poslovne grane">
             {siteConfig.businessLines.map((line) => (
-              <a key={line.id} href={line.href} target="_blank" rel="noreferrer">
+              <a
+                key={line.id}
+                href={line.href}
+                target={line.href.startsWith("http") ? "_blank" : undefined}
+                rel={line.href.startsWith("http") ? "noreferrer" : undefined}
+              >
                 <span>{line.number}</span>
                 <strong>{line.name}</strong>
                 <Arrow />
@@ -173,8 +177,8 @@ export default function Home() {
             <p className="eyebrow eyebrow-dark">DDM mreža</p>
             <h2 id="business-title">Različite potrebe.<br /><em>Jedan DDM.</em></h2>
             <p>
-              Četiri specijalizovana sajta, svako sa jasnom ponudom. Iza svih njih
-              stoje DDM Company, ista adresa i direktan kontakt.
+              Šest specijalizovanih oblasti, svaka sa jasnom ponudom. Iza svih njih
+              stoji DDM Company, ista adresa i direktan kontakt.
             </p>
           </div>
 
@@ -183,8 +187,8 @@ export default function Home() {
               <a
                 className={`brand-panel brand-panel-${line.id}`}
                 href={line.href}
-                target="_blank"
-                rel="noreferrer"
+                target={line.href.startsWith("http") ? "_blank" : undefined}
+                rel={line.href.startsWith("http") ? "noreferrer" : undefined}
                 key={line.id}
               >
                 <span className="brand-number">{line.number}</span>
@@ -278,16 +282,16 @@ export default function Home() {
             <div>
               <span>Adresa</span>
               <p>{siteConfig.address}</p>
-              <a href={siteConfig.mapsUrl} target="_blank" rel="noreferrer">Otvori Google mapu <Arrow /></a>
+              <a className="contact-map-link" href={siteConfig.mapsUrl} target="_blank" rel="noreferrer">Otvori Google mapu <Arrow /></a>
             </div>
             <div>
               <span>Radno vreme</span>
               <p>{siteConfig.hours.weekdays}<br />{siteConfig.hours.saturday}<br />{siteConfig.hours.sunday}</p>
             </div>
             <div>
-              <span>Email i Instagram</span>
+              <span>Email</span>
               <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
-              <a href={siteConfig.instagramUrl} target="_blank" rel="noreferrer">{siteConfig.instagramDisplay}</a>
+              <a href={`mailto:${siteConfig.secondaryEmail}`}>{siteConfig.secondaryEmail}</a>
             </div>
           </div>
         </section>
@@ -303,7 +307,14 @@ export default function Home() {
         <div className="footer-links">
           <span>DDM mreža</span>
           {siteConfig.businessLines.map((line) => (
-            <a href={line.href} target="_blank" rel="noreferrer" key={line.id}>{line.name} <Arrow /></a>
+            <a
+              href={line.href}
+              target={line.href.startsWith("http") ? "_blank" : undefined}
+              rel={line.href.startsWith("http") ? "noreferrer" : undefined}
+              key={line.id}
+            >
+              {line.name} <Arrow />
+            </a>
           ))}
         </div>
         <div className="footer-bottom">

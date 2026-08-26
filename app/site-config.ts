@@ -1,15 +1,14 @@
 export const siteConfig = {
   name: "DDM Company",
   description:
-    "Servis i održavanje, rent-a-car, Keeway i Morbidelli motocikli, Vesta i Trigano prikolice i ugradnja auto-kuka u Novom Sadu.",
+    "Servis i održavanje, SWM automobili, rent-a-car, Keeway i Morbidelli motocikli, Vesta i Trigano prikolice i ugradnja auto-kuka u Novom Sadu.",
   phoneDisplay: "060 300 16 33",
   phoneHref: "tel:+381603001633",
   email: "ddmcompany@gmail.com",
+  secondaryEmail: "vladimir.ddmcompany@gmail.com",
   address: "Dr Svetislava Kasapinovića 9, 21000 Novi Sad",
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=Dr+Svetislava+Kasapinovi%C4%87a+9%2C+21000+Novi+Sad",
-  instagramUrl: "https://www.instagram.com/ddmcompany.ns/",
-  instagramDisplay: "@ddmcompany.ns",
   hours: {
     weekdays: "Radni dani 08:00–16:00",
     saturday: "Subota 08:00–14:00",
@@ -28,8 +27,19 @@ export const siteConfig = {
       logo: "/brands/ddm-company.png",
     },
     {
-      id: "keeway",
+      id: "swm",
       number: "02",
+      name: "SWM Automobili",
+      label: "Prodaja kineskih automobila",
+      description:
+        "Prodaja novih kineskih SWM automobila uz direktne informacije o modelima, opremi i dostupnosti.",
+      href: "https://swm-auto.rs/",
+      cta: "Pogledajte modele",
+      logo: "/brands/swm.png",
+    },
+    {
+      id: "keeway",
+      number: "03",
       name: "Keeway Srbija",
       label: "Motocikli i skuteri",
       description:
@@ -40,7 +50,7 @@ export const siteConfig = {
     },
     {
       id: "morbidelli",
-      number: "03",
+      number: "04",
       name: "Morbidelli Srbija",
       label: "Motocikli",
       description:
@@ -51,7 +61,7 @@ export const siteConfig = {
     },
     {
       id: "povuci",
-      number: "04",
+      number: "05",
       name: "Povuci.rs",
       label: "Auto-prikolice",
       description:
@@ -59,6 +69,17 @@ export const siteConfig = {
       href: "https://povuci.rs",
       cta: "Pronađite prikolicu",
       logo: "/brands/povuci.png",
+    },
+    {
+      id: "autoservis",
+      number: "06",
+      name: "DDM Auto servis",
+      label: "Servis i održavanje",
+      description:
+        "Profesionalno održavanje i servisiranje vozila na DDM Company lokaciji u Novom Sadu.",
+      href: "/auto-servis",
+      cta: "Posetite Auto servis",
+      logo: "/brands/ddm-company.png",
     },
   ],
 } as const;
