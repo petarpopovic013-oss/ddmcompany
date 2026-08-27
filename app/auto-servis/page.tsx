@@ -1,15 +1,46 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowIcon } from "../components/arrow-icon";
+import { JsonLd } from "../components/json-ld";
 import { siteConfig } from "../site-config";
 
+const serviceDescription =
+  "Auto servis Novi Sad za dijagnostiku, automehaniku, ulje i filtere, klimu, kočnice, DPF, gume i šlep službu. Zakažite termin: 021 2700 017.";
+
 export const metadata: Metadata = {
-  title: "DDM Auto servis | Novi Sad",
-  description:
-    "DDM Auto servis u Novom Sadu — dijagnostika, automehanika, zamena ulja i filtera, klima, kočnice, DPF, gume i pomoć na putu.",
+  title: "Auto servis Novi Sad – Servis i dijagnostika",
+  description: serviceDescription,
+  alternates: {
+    canonical: "/auto-servis",
+    languages: { "sr-RS": "/auto-servis" },
+  },
+  openGraph: {
+    type: "website",
+    locale: siteConfig.locale,
+    url: "/auto-servis",
+    siteName: siteConfig.name,
+    title: "DDM Auto servis Novi Sad – Servis i dijagnostika",
+    description: serviceDescription,
+    images: [
+      {
+        url: "/images/ddm-auto-servis-og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "DDM Auto servis u Novom Sadu",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DDM Auto servis Novi Sad – Servis i dijagnostika",
+    description: serviceDescription,
+    images: ["/images/ddm-auto-servis-og.jpg"],
+  },
 };
 
 const servicePhoneDisplay = "021 2700 017";
+const servicePhone = "+381212700017";
 const servicePhoneHref = "tel:+381212700017";
 
 const services = [
@@ -52,43 +83,90 @@ const memberships = [
   },
 ] as const;
 
-function Arrow() {
-  return <span aria-hidden="true">↗</span>;
-}
-
 export default function AutoServisPage() {
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "AutoRepair",
-    name: "DDM Auto servis",
-    description:
-      "Profesionalno održavanje i popravka vozila u Novom Sadu. Ovlašćeni servis za GAZ, TENAX, Lada i SWM vozila.",
-    telephone: "+381212700017",
-    email: siteConfig.email,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Dr Svetislava Kasapinovića 9",
-      addressLocality: "Novi Sad",
-      postalCode: "21000",
-      addressCountry: "RS",
-    },
-    openingHours: ["Mo-Fr 08:00-16:00", "Sa 08:00-14:00"],
-    hasOfferCatalog: {
-      "@type": "OfferCatalog",
-      name: "Usluge DDM Auto servisa",
-      itemListElement: services.map((service) => ({
-        "@type": "Offer",
-        itemOffered: { "@type": "Service", name: service },
-      })),
-    },
+    "@graph": [
+      {
+        "@type": "AutoRepair",
+        "@id": `${siteConfig.url}/auto-servis#business`,
+        name: "DDM Auto servis",
+        url: `${siteConfig.url}/auto-servis`,
+        description: serviceDescription,
+        image: `${siteConfig.url}/images/ddm-auto-servis-novi-sad.webp`,
+        logo: `${siteConfig.url}${siteConfig.logo}`,
+        telephone: servicePhone,
+        email: siteConfig.email,
+        parentOrganization: { "@id": `${siteConfig.url}/#organization` },
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "Dr Svetislava Kasapinovića 9",
+          addressLocality: "Novi Sad",
+          postalCode: "21000",
+          addressCountry: "RS",
+        },
+        areaServed: {
+          "@type": "City",
+          name: "Novi Sad",
+        },
+        openingHoursSpecification: [
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            opens: "08:00",
+            closes: "16:00",
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: "Saturday",
+            opens: "08:00",
+            closes: "14:00",
+          },
+        ],
+        makesOffer: services.map((service) => ({
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: service,
+            areaServed: "Novi Sad",
+          },
+        })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${siteConfig.url}/auto-servis#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "DDM Company",
+            item: siteConfig.url,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Auto servis Novi Sad",
+            item: `${siteConfig.url}/auto-servis`,
+          },
+        ],
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${siteConfig.url}/auto-servis#webpage`,
+        url: `${siteConfig.url}/auto-servis`,
+        name: "DDM Auto servis Novi Sad – Servis i dijagnostika",
+        description: serviceDescription,
+        inLanguage: siteConfig.language,
+        isPartOf: { "@id": `${siteConfig.url}/#website` },
+        about: { "@id": `${siteConfig.url}/auto-servis#business` },
+        breadcrumb: { "@id": `${siteConfig.url}/auto-servis#breadcrumb` },
+      },
+    ],
   };
 
   return (
     <div className="site service-site" id="top">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
-      />
+      <JsonLd data={structuredData} />
 
       <header className="header">
         <Link className="logo" href="/" aria-label="DDM Company — početna">
@@ -130,14 +208,14 @@ export default function AutoServisPage() {
               uz iskusan tim, savremenu dijagnostiku i jasan dogovor pre svakog rada.
             </p>
             <div className="service-hero-actions">
-              <a className="button button-light" href={servicePhoneHref}>Zakažite servis <Arrow /></a>
-              <a className="underlined-link" href="#usluge">Pogledajte usluge <span aria-hidden="true">↓</span></a>
+              <a className="button button-light" href={servicePhoneHref}>Zakažite servis <ArrowIcon /></a>
+              <a className="underlined-link" href="#usluge">Pogledajte usluge <ArrowIcon direction="down" /></a>
             </div>
           </div>
 
           <figure className="service-hero-image">
             <Image
-              src="/images/hero servis.JPG"
+              src="/images/ddm-auto-servis-novi-sad.webp"
               alt="Objekat DDM Auto servisa u Novom Sadu"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -225,7 +303,7 @@ export default function AutoServisPage() {
                   <h3>{membership.name}</h3>
                   <p>{membership.description}</p>
                 </div>
-                <span className="membership-arrow"><Arrow /></span>
+                <span className="membership-arrow"><ArrowIcon /></span>
               </a>
             ))}
           </div>
@@ -235,13 +313,13 @@ export default function AutoServisPage() {
           <div className="service-contact-intro">
             <p className="eyebrow">Zakažite termin</p>
             <h2 id="service-contact-title">Dovezite vozilo.<br /><em>Mi brinemo dalje.</em></h2>
-            <a href={servicePhoneHref}>{servicePhoneDisplay} <Arrow /></a>
+            <a href={servicePhoneHref}>{servicePhoneDisplay} <ArrowIcon /></a>
           </div>
           <div className="service-contact-details">
             <div>
               <span>Lokacija</span>
               <p>{siteConfig.address}</p>
-              <a href={siteConfig.mapsUrl} target="_blank" rel="noreferrer">Otvori Google mapu <Arrow /></a>
+              <a href={siteConfig.mapsUrl} target="_blank" rel="noreferrer">Otvori Google mapu <ArrowIcon /></a>
             </div>
             <div className="service-hours-card">
               <span>Radno vreme</span>
@@ -273,10 +351,10 @@ export default function AutoServisPage() {
         </div>
         <div className="footer-links">
           <span>Brzi linkovi</span>
-          <Link href="/">DDM Company <Arrow /></Link>
-          <a href="#usluge">Usluge <Arrow /></a>
-          <a href="#ovlascenja">Ovlašćenja <Arrow /></a>
-          <a href="#kontakt">Kontakt <Arrow /></a>
+          <Link href="/">DDM Company <ArrowIcon /></Link>
+          <a href="#usluge">Usluge <ArrowIcon /></a>
+          <a href="#ovlascenja">Ovlašćenja <ArrowIcon /></a>
+          <a href="#kontakt">Kontakt <ArrowIcon /></a>
         </div>
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} DDM Company. Sva prava zadržana.</span>

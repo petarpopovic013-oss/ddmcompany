@@ -1,7 +1,14 @@
 export const siteConfig = {
   name: "DDM Company",
+  legalName: "DDM Company d.o.o. Novi Sad",
+  url: "https://www.ddm.rs",
+  locale: "sr_RS",
+  language: "sr-RS",
+  logo: "/brands/ddm-company.png",
+  socialImage: "/images/ddm-company-og.jpg",
   description:
     "Servis i održavanje, SWM automobili, rent-a-car, Keeway i Morbidelli motocikli, Vesta i Trigano prikolice i ugradnja auto-kuka u Novom Sadu.",
+  phone: "+381603001633",
   phoneDisplay: "060 300 16 33",
   phoneHref: "tel:+381603001633",
   email: "ddmcompany@gmail.com",

@@ -1,4 +1,7 @@
 import Image from "next/image";
+import { ArrowIcon } from "./components/arrow-icon";
+import { CarLogoCarousel } from "./components/car-logo-carousel";
+import { JsonLd } from "./components/json-ld";
 import { siteConfig } from "./site-config";
 
 const navigation = [
@@ -8,82 +11,114 @@ const navigation = [
   ["Kontakt", "#kontakt"],
 ] as const;
 
-const carBrands = [
-  "mercedes",
-  "bmw",
-  "audi",
-  "volkswagen",
-  "hyundai",
-  "toyota",
-  "skoda",
-  "ford",
-  "renault",
-  "peugeot",
-] as const;
-
-const carBrandNames: Record<(typeof carBrands)[number], string> = {
-  mercedes: "Mercedes-Benz",
-  bmw: "BMW",
-  audi: "Audi",
-  volkswagen: "Volkswagen",
-  hyundai: "Hyundai",
-  toyota: "Toyota",
-  skoda: "Škoda",
-  ford: "Ford",
-  renault: "Renault",
-  peugeot: "Peugeot",
-};
-
-function Arrow() {
-  return <span aria-hidden="true">↗</span>;
-}
-
 export default function Home() {
+  const absoluteUrl = (url: string) =>
+    url.startsWith("http") ? url : `${siteConfig.url}${url}`;
+
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": ["Organization", "AutomotiveBusiness"],
-    name: siteConfig.name,
-    description: siteConfig.description,
-    telephone: "+381603001633",
-    email: siteConfig.email,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Dr Svetislava Kasapinovića 9",
-      addressLocality: "Novi Sad",
-      postalCode: "21000",
-      addressCountry: "RS",
-    },
-    openingHoursSpecification: [
+    "@graph": [
       {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        opens: "08:00",
-        closes: "16:00",
+        "@type": "WebSite",
+        "@id": `${siteConfig.url}/#website`,
+        url: siteConfig.url,
+        name: siteConfig.name,
+        alternateName: "DDM",
+        description: siteConfig.description,
+        inLanguage: siteConfig.language,
+        publisher: { "@id": `${siteConfig.url}/#organization` },
       },
       {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: "Saturday",
-        opens: "08:00",
-        closes: "14:00",
+        "@type": ["Organization", "AutomotiveBusiness"],
+        "@id": `${siteConfig.url}/#organization`,
+        name: siteConfig.name,
+        alternateName: "DDM",
+        legalName: siteConfig.legalName,
+        url: siteConfig.url,
+        description: siteConfig.description,
+        logo: {
+          "@type": "ImageObject",
+          "@id": `${siteConfig.url}/#logo`,
+          url: `${siteConfig.url}${siteConfig.logo}`,
+          width: 946,
+          height: 392,
+        },
+        image: `${siteConfig.url}/images/ddm-location.webp`,
+        telephone: siteConfig.phone,
+        email: siteConfig.email,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "Dr Svetislava Kasapinovića 9",
+          addressLocality: "Novi Sad",
+          postalCode: "21000",
+          addressCountry: "RS",
+        },
+        areaServed: {
+          "@type": "City",
+          name: "Novi Sad",
+        },
+        contactPoint: {
+          "@type": "ContactPoint",
+          telephone: siteConfig.phone,
+          contactType: "customer service",
+          areaServed: "RS",
+          availableLanguage: ["sr"],
+        },
+        openingHoursSpecification: [
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            opens: "08:00",
+            closes: "16:00",
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: "Saturday",
+            opens: "08:00",
+            closes: "14:00",
+          },
+        ],
+        department: siteConfig.businessLines.map((line) => ({
+          "@type": "Organization",
+          name: line.name,
+          url: absoluteUrl(line.href),
+        })),
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "DDM Company delatnosti",
+          itemListElement: siteConfig.businessLines.map((line) => ({
+            "@type": "Offer",
+            url: absoluteUrl(line.href),
+            itemOffered: {
+              "@type": "Service",
+              name: line.name,
+              description: line.description,
+            },
+          })),
+        },
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${siteConfig.url}/#webpage`,
+        url: siteConfig.url,
+        name: "DDM Company | Sve za vozilo u Novom Sadu",
+        description: siteConfig.description,
+        inLanguage: siteConfig.language,
+        isPartOf: { "@id": `${siteConfig.url}/#website` },
+        about: { "@id": `${siteConfig.url}/#organization` },
+        primaryImageOfPage: {
+          "@type": "ImageObject",
+          url: `${siteConfig.url}/images/ddm-location.webp`,
+          width: 1800,
+          height: 1350,
+        },
       },
     ],
-    hasOfferCatalog: {
-      "@type": "OfferCatalog",
-      name: "DDM Company delatnosti",
-      itemListElement: siteConfig.businessLines.map((line) => ({
-        "@type": "OfferCatalog",
-        name: line.name,
-        url: line.href,
-      })),
-    },
   };
 
   return (
     <div className="site" id="top">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
+      <JsonLd data={structuredData} />
 
       <header className="header">
         <a className="logo" href="#top" aria-label="DDM Company — početna">
@@ -136,10 +171,10 @@ export default function Home() {
               </p>
               <div className="hero-actions">
                 <a className="button button-light" href={siteConfig.phoneHref}>
-                  Pozovite nas <Arrow />
+                  Pozovite nas <ArrowIcon />
                 </a>
                 <a className="underlined-link" href="#delatnosti">
-                  Izaberite oblast <span aria-hidden="true">↓</span>
+                  Izaberite oblast <ArrowIcon direction="down" />
                 </a>
               </div>
             </div>
@@ -166,7 +201,7 @@ export default function Home() {
               >
                 <span>{line.number}</span>
                 <strong>{line.name}</strong>
-                <Arrow />
+                <ArrowIcon />
               </a>
             ))}
           </nav>
@@ -202,7 +237,7 @@ export default function Home() {
                   <p>{line.description}</p>
                   <span>{line.cta}</span>
                 </div>
-                <span className="brand-arrow"><Arrow /></span>
+                <span className="brand-arrow"><ArrowIcon /></span>
               </a>
             ))}
           </nav>
@@ -212,7 +247,6 @@ export default function Home() {
           <div className="about-images">
             <figure className="about-image-main">
               <Image src="/images/ddm-exterior.webp" alt="Ulaz u DDM Company u Novom Sadu" fill sizes="(max-width: 1024px) 100vw, 52vw" />
-              <figcaption>DDM Company / Novi Sad</figcaption>
             </figure>
             <figure className="about-image-small">
               <Image src="/images/ddm-workshop.webp" alt="DDM Company radionica" fill sizes="(max-width: 1024px) 45vw, 20vw" />
@@ -232,7 +266,7 @@ export default function Home() {
               <span><b>02</b> Prodaja i distribucija</span>
               <span><b>03</b> Iznajmljivanje vozila</span>
             </div>
-            <a className="button button-dark" href="#kontakt">Kontaktirajte nas <Arrow /></a>
+            <a className="button button-dark" href="#kontakt">Kontaktirajte nas <ArrowIcon /></a>
           </div>
         </section>
 
@@ -250,39 +284,28 @@ export default function Home() {
             </p>
             <div className="towbar-actions">
               <a className="button button-light" href={siteConfig.phoneHref}>
-                Zakažite {siteConfig.phoneDisplay} <Arrow />
+                Zakažite {siteConfig.phoneDisplay} <ArrowIcon />
               </a>
               <a className="underlined-link" href="https://povuci.rs" target="_blank" rel="noreferrer">
-                Prikolice i oprema na Povuci.rs <Arrow />
+                Prikolice i oprema na Povuci.rs <ArrowIcon />
               </a>
             </div>
           </div>
 
-          <div className="car-logo-rail" aria-label="Marke vozila za ugradnju auto-kuka">
-            {carBrands.map((brand) => (
-              <div className="car-logo" key={brand}>
-                <Image
-                  src={`/car-logos/${brand}.svg`}
-                  alt={carBrandNames[brand]}
-                  width={110}
-                  height={52}
-                />
-              </div>
-            ))}
-          </div>
+          <CarLogoCarousel />
         </section>
 
         <section className="contact-section" id="kontakt" aria-labelledby="contact-title">
           <div className="contact-primary">
             <p className="eyebrow">Direktan kontakt</p>
             <h2 id="contact-title">Imate pitanje?<br />Pozovite DDM.</h2>
-            <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay} <Arrow /></a>
+            <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay} <ArrowIcon /></a>
           </div>
           <div className="contact-details">
             <div>
               <span>Adresa</span>
               <p>{siteConfig.address}</p>
-              <a className="contact-map-link" href={siteConfig.mapsUrl} target="_blank" rel="noreferrer">Otvori Google mapu <Arrow /></a>
+              <a className="contact-map-link" href={siteConfig.mapsUrl} target="_blank" rel="noreferrer">Otvori Google mapu <ArrowIcon /></a>
             </div>
             <div>
               <span>Radno vreme</span>
@@ -313,7 +336,7 @@ export default function Home() {
               rel={line.href.startsWith("http") ? "noreferrer" : undefined}
               key={line.id}
             >
-              {line.name} <Arrow />
+              {line.name} <ArrowIcon />
             </a>
           ))}
         </div>
